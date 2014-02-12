@@ -58,6 +58,7 @@ process.on('exit', function(code) {
     nodeSyslog.log(nodeSyslog.LOG_NOTICE, 'action=exit; exit_code=' + code + ';');
 });
 
+
 function nodeSyslogLogger (options) {
 
 	var options = options || {};
@@ -76,23 +77,31 @@ function nodeSyslogLogger (options) {
 	});
 }
 
+
 nodeSyslogLogger.prototype._close = function () {
+
 	nodeSyslog.close();
+
 }
 
+
 nodeSyslogLogger.prototype._init = function (name,facility,cb) {
+
 	try {
 		nodeSyslog.init(name, nodeSyslog.LOG_PID | nodeSyslog.LOG_ODELAY, facility);
 	} catch (err) {
 		this._lasterror = err;
 		this._lasterrorMsg = 'syslog init failed';
 		this._lasterrorTime = new Date().toISOString();
-		cb(err);
+		return cb(err);
 	} 
-	cb(null);
+	return cb(null);
+
 }
 
+
 nodeSyslogLogger.prototype._log  = function (level,msg,cb) {
+
 	if ( ! msg ) return cb(null); // ignore empty messages
 	var _cb = cb || function(e,r) {}; // ?
 	if (this._lasterror) {
@@ -141,68 +150,92 @@ nodeSyslogLogger.prototype._log  = function (level,msg,cb) {
 		}
 	} 
 	return _cb(null);
+
 }
 
+
 nodeSyslogLogger.prototype.emergency = function(msg,cb){
+
 	if ( nodeSyslog.LOG_EMERG <= this._level ) {
 		this._log(nodeSyslog.LOG_EMERG, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
 
+
 nodeSyslogLogger.prototype.alert = function(msg,cb){
+
 	if ( nodeSyslog.LOG_ALERT <= this._level ) {
 		this._log(nodeSyslog.LOG_ALERT, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
 
+
 nodeSyslogLogger.prototype.critical = function(msg,cb){
+
 	if ( nodeSyslog.LOG_CRIT <= this._level ) {
 		this._log(nodeSyslog.LOG_CRIT, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
 
+
 nodeSyslogLogger.prototype.error = function(msg, cb){
+
 	if ( nodeSyslog.LOG_ERR <= this._level ) {
 		this._log(nodeSyslog.LOG_ERR, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
 
+
 nodeSyslogLogger.prototype.warning = function(msg, cb){
+
 	if ( nodeSyslog.LOG_WARNING <= this._level ) {
 		this._log(nodeSyslog.LOG_WARNING, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
 
+
 nodeSyslogLogger.prototype.notice = function(msg, cb){
+
 	if ( nodeSyslog.LOG_NOTICE <= this._level ) {
 		this._log(nodeSyslog.LOG_NOTICE, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
 
+
 nodeSyslogLogger.prototype.info = function(msg, cb){
+
 	if ( nodeSyslog.LOG_INFO <= this._level ) {
 		this._log(nodeSyslog.LOG_INFO, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
 
 nodeSyslogLogger.prototype.debug = function(msg, cb){
+
 	if ( nodeSyslog.LOG_DEBUG <= this._level ) {
 		this._log(nodeSyslog.LOG_DEBUG, msg, cb);
 	} else {
 		return cb(null);
 	}
+
 }
