@@ -24,7 +24,7 @@ Feb  9 23:16:45 ubu-precise node[18531]: action=exit; exit_code=0;
 */
 
 
-var NodeSyslogLogger = require('./nodesysloglogger');
+var NodeSyslogLogger = require('node-syslog-logger');
 
 var log = new NodeSyslogLogger({level:7});
 

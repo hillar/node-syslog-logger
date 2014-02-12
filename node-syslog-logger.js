@@ -27,7 +27,7 @@
 //
 // some saple code ...
 
-var Syslog = require('./node-syslog-logger');
+var Syslog = require('node-syslog-logger');
 
 var log = new Syslog();
 
