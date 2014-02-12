@@ -1,0 +1,31 @@
+{
+    "name": "node-syslog-logger",
+    "version": "0.0.1",
+    "main": "./node-syslog-logger.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "engines": {
+        "node" : ">=0.8.0"
+    },
+    "description": "helper around node-syslog",
+    "author": "Hillar Aarelaid (hillar@aarelaid.net)",
+    "homepage": "http://github.com/hillar/node-syslog-logger",
+    "repository" :
+    {
+        "type" : "git",
+        "url" : "git@github.com:hillar/node-syslog-logger.git"
+    },
+    "bugs": {
+        "url": "https://github.com/hillar/node-syslog-logger/issues"
+    },
+      "dependencies": {
+        "node-syslog":"~1.1.7"
+    },
+    "licenses": [
+    {
+        "type": "Simplified BSD License",
+        "url": "http://en.wikipedia.org/wiki/BSD_licenses"
+    }],
+    "tags": ["syslog", "log", "logging"]
+}
