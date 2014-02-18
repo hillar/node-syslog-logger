@@ -52,8 +52,8 @@ var nodeSyslog = require('node-syslog');
 
 module.exports = nodeSyslogLogger;
 
-process.on('exit', function(code) {
-	// we are about to exit anyway, so no extra try catch here
+process.on('exit', function (code) {
+	// exiting anyway, so no extra try catch here
 	nodeSyslog.init(process.title, nodeSyslog.LOG_PID | nodeSyslog.LOG_ODELAY, nodeSyslog.LOG_SYSLOG);
     nodeSyslog.log(nodeSyslog.LOG_NOTICE, 'action=exit; exit_code=' + code + ';');
 });
@@ -61,10 +61,10 @@ process.on('exit', function(code) {
 
 function nodeSyslogLogger (options) {
 
-	var options = options || {};
-	this._name = options.tag || process.title;
-	this._level = options.level || nodeSyslog.LOG_NOTICE;
-	this._facility = options.facility || nodeSyslog.LOG_SYSLOG;
+	var _options = options || {};
+	this._name = _options.tag || process.title;
+	this._level = _options.level || nodeSyslog.LOG_NOTICE;
+	this._facility = _options.facility || nodeSyslog.LOG_SYSLOG;
 	this._lasterror = null;
 	this._lasterrorTime = null;
 	this._lasterrorCount = 0;
@@ -82,10 +82,10 @@ nodeSyslogLogger.prototype._close = function () {
 
 	nodeSyslog.close();
 
-}
+};
 
 
-nodeSyslogLogger.prototype._init = function (name,facility,cb) {
+nodeSyslogLogger.prototype._init = function (name, facility, cb) {
 
 	try {
 		nodeSyslog.init(name, nodeSyslog.LOG_PID | nodeSyslog.LOG_ODELAY, facility);
@@ -97,16 +97,16 @@ nodeSyslogLogger.prototype._init = function (name,facility,cb) {
 	} 
 	return cb(null);
 
-}
+};
 
 
-nodeSyslogLogger.prototype._log  = function (level,msg,cb) {
+nodeSyslogLogger.prototype._log  = function (level, msg, cb) {
 
 	if ( ! msg ) return cb(null); // ignore empty messages
 	var _cb = cb || function(e,r) {}; // ?
 	if (this._lasterror) {
-		var msg = 'last_error_time=' + this._lasterrorTime + ' syslog_error=(' + this._lasterror + '); ' + 'missed_total='+this._lasterrorCount+'; '; 
-		msg += 'last_message=(' + this._lasterrorMsg + ');';
+		var _msg = 'last_error_time=' + this._lasterrorTime + ' syslog_error=(' + this._lasterror + '); ' + 'missed_total='+this._lasterrorCount+'; '; 
+		_msg += 'last_message=(' + this._lasterrorMsg + ');';
 		var canSettoZero = true;
 		try {
 			nodeSyslog.init(process.title, nodeSyslog.LOG_PID | nodeSyslog.LOG_ODELAY, nodeSyslog.LOG_SYSLOG);
@@ -114,7 +114,7 @@ nodeSyslogLogger.prototype._log  = function (level,msg,cb) {
 			canSettoZero = false;
 		}
 		try {
-			nodeSyslog.log(nodeSyslog.LOG_NOTICE, msg);
+			nodeSyslog.log(nodeSyslog.LOG_NOTICE, _msg);
 		} catch (err) { 
 			canSettoZero = false;
 		}
@@ -142,19 +142,19 @@ nodeSyslogLogger.prototype._log  = function (level,msg,cb) {
 				}
 			});
 		} else {
-			_this._lasterror = err;
-			_this._lasterrorMsg = msg;
-			_this._lasterrorTime = new Date().toISOString();
+			this._lasterror = err;
+			this._lasterrorMsg = msg;
+			this._lasterrorTime = new Date().toISOString();
 			this._lasterrorCount += 1;
 			return _cb(err);
 		}
 	} 
 	return _cb(null);
 
-}
+};
 
 
-nodeSyslogLogger.prototype.emergency = function(msg,cb){
+nodeSyslogLogger.prototype.emergency = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_EMERG <= this._level ) {
 		this._log(nodeSyslog.LOG_EMERG, msg, cb);
@@ -162,10 +162,10 @@ nodeSyslogLogger.prototype.emergency = function(msg,cb){
 		return cb(null);
 	}
 
-}
+};
 
 
-nodeSyslogLogger.prototype.alert = function(msg,cb){
+nodeSyslogLogger.prototype.alert = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_ALERT <= this._level ) {
 		this._log(nodeSyslog.LOG_ALERT, msg, cb);
@@ -173,10 +173,10 @@ nodeSyslogLogger.prototype.alert = function(msg,cb){
 		return cb(null);
 	}
 
-}
+};
 
 
-nodeSyslogLogger.prototype.critical = function(msg,cb){
+nodeSyslogLogger.prototype.critical = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_CRIT <= this._level ) {
 		this._log(nodeSyslog.LOG_CRIT, msg, cb);
@@ -184,10 +184,10 @@ nodeSyslogLogger.prototype.critical = function(msg,cb){
 		return cb(null);
 	}
 
-}
+};
 
 
-nodeSyslogLogger.prototype.error = function(msg, cb){
+nodeSyslogLogger.prototype.error = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_ERR <= this._level ) {
 		this._log(nodeSyslog.LOG_ERR, msg, cb);
@@ -195,10 +195,10 @@ nodeSyslogLogger.prototype.error = function(msg, cb){
 		return cb(null);
 	}
 
-}
+};
 
 
-nodeSyslogLogger.prototype.warning = function(msg, cb){
+nodeSyslogLogger.prototype.warning = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_WARNING <= this._level ) {
 		this._log(nodeSyslog.LOG_WARNING, msg, cb);
@@ -206,10 +206,10 @@ nodeSyslogLogger.prototype.warning = function(msg, cb){
 		return cb(null);
 	}
 
-}
+};
 
 
-nodeSyslogLogger.prototype.notice = function(msg, cb){
+nodeSyslogLogger.prototype.notice = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_NOTICE <= this._level ) {
 		this._log(nodeSyslog.LOG_NOTICE, msg, cb);
@@ -217,10 +217,10 @@ nodeSyslogLogger.prototype.notice = function(msg, cb){
 		return cb(null);
 	}
 
-}
+};
 
 
-nodeSyslogLogger.prototype.info = function(msg, cb){
+nodeSyslogLogger.prototype.info = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_INFO <= this._level ) {
 		this._log(nodeSyslog.LOG_INFO, msg, cb);
@@ -228,9 +228,9 @@ nodeSyslogLogger.prototype.info = function(msg, cb){
 		return cb(null);
 	}
 
-}
+};
 
-nodeSyslogLogger.prototype.debug = function(msg, cb){
+nodeSyslogLogger.prototype.debug = function (msg, cb) {
 
 	if ( nodeSyslog.LOG_DEBUG <= this._level ) {
 		this._log(nodeSyslog.LOG_DEBUG, msg, cb);
@@ -238,4 +238,4 @@ nodeSyslogLogger.prototype.debug = function(msg, cb){
 		return cb(null);
 	}
 
-}
+};
